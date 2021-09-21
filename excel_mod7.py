@@ -49,7 +49,7 @@ def main(timbers, group = [18, 20, 22, 24, 26, 35], mode=6, L1=5.7, L2=6.05, L3=
     Diametr_KM = 50 
     d_min = group[0]
     regsort = ("Металл", "Диаметр<{}".format(d_min), "Cx","L", "C", "D", "Dc", "KM", "E", "AB")
-    header_def = ["Диаметр<{}".format(d_min), "Металл", "Брак (гниль, сложная кривизна)", "Итого, брак"]
+    header_def = ["Диаметр<{}".format(d_min), "Металл", "Гниль, сложная кривизна", "Итого, брак"]
     sort_matching = {
                     "Диаметр<{}".format(d_min): 0,
                     "Металл": 1,
@@ -145,6 +145,13 @@ def main(timbers, group = [18, 20, 22, 24, 26, 35], mode=6, L1=5.7, L2=6.05, L3=
             add_to_table(diametr = diametr, group = group, table = timbers57m, volumes = volume6, length = length)
             add_to_1c(diametr = diametr, table = timbers1C, sort = sort, length = length)
             add_to_log(target = "6 метров KM в 3ий сорт",ind = i, sort = 'KM', length = 6, diametr = diametr, timbers_log = timbers_log, timber1 = timber1, timber2 = timber2)
+
+        elif sort == "KM" and length == 5.7 and diametr >= d_min:
+            timbers57m[-1][2] += volume57[diametr]
+            timbers57m[-1][1] += 1
+            add_to_table(diametr = diametr, group = group, table = timbers57m, volumes = volume57, length = length)
+            add_to_1c(diametr = diametr, table = timbers1C, sort = sort, length = length)
+            add_to_log(target = "5.7 метров KM в 3ий сорт",ind = i, sort = 'KM', length = 6, diametr = diametr, timbers_log = timbers_log, timber1 = timber1, timber2 = timber2)
 
         elif sort == "L" and length == 6 and diametr >= d_min:
             timbers57m[-1][2] += volume3[diametr]
@@ -333,7 +340,7 @@ def data_cleaning(basic_info):
 
     return basic_info
 
-def export_in_excel(template="app/doc_template/template-akt-2021-08.xlsx", **tables):
+def export_in_excel(template="app/doc_template/template-akt-2021-09.xlsx", **tables):
     """Заполнение шаблона excel
     """
     timbers1C = tables['timbers1C']
